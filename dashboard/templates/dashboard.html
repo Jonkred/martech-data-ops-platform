@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MarTech DataOps & Incident Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen p-8">
+  <div class="max-w-6xl mx-auto space-y-6">
+    <div class="flex justify-between items-center border-b border-slate-700 pb-4">
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight text-white">MarTech Data Platform Control Center</h1>
+        <p class="text-slate-400 text-sm">Identity Resolution • Medallion DLT • Reverse ETL Sync</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+          ● Platform Active
+        </span>
+      </div>
+    </div>
+
+    <!-- Cards de Métricas -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+        <span class="text-slate-400 text-xs font-semibold uppercase">SLA Data Freshness</span>
+        <div class="text-2xl font-bold mt-1 text-white">99.8%</div>
+        <p class="text-emerald-400 text-xs mt-1">Target &lt; 15 min latency</p>
+      </div>
+      <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+        <span class="text-slate-400 text-xs font-semibold uppercase">Reverse ETL Target</span>
+        <div class="text-2xl font-bold mt-1 text-sky-400">Braze / Segment</div>
+        <p class="text-slate-400 text-xs mt-1">Webhook REST Payload active</p>
+      </div>
+      <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+        <span class="text-slate-400 text-xs font-semibold uppercase">Total Pipeline Runs</span>
+        <div class="text-2xl font-bold mt-1 text-white">{{ runs|length }}</div>
+        <p class="text-slate-400 text-xs mt-1">Telemetry registered</p>
+      </div>
+    </div>
+
+    <!-- Tabela de Execuções e Auditoria -->
+    <div class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+      <div class="p-4 border-b border-slate-700 font-semibold text-sm">Pipeline Execution Telemetry</div>
+      <table class="w-full text-left text-sm">
+        <thead class="bg-slate-900/60 text-slate-400 text-xs uppercase">
+          <tr>
+            <th class="p-3">Job Name</th>
+            <th class="p-3">Records</th>
+            <th class="p-3">Duration (ms)</th>
+            <th class="p-3">Status</th>
+            <th class="p-3">Timestamp</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-700">
+          {% for run in runs %}
+          <tr class="hover:bg-slate-750">
+            <td class="p-3 font-mono text-xs">{{ run[0] }}</td>
+            <td class="p-3">{{ run[1] }}</td>
+            <td class="p-3">{{ "%.2f"|format(run[2]) }} ms</td>
+            <td class="p-3">
+              <span class="px-2 py-0.5 rounded text-xs {{ 'bg-emerald-500/20 text-emerald-300' if run[3] == 'SUCCESS' else 'bg-rose-500/20 text-rose-300' }}">
+                {{ run[3] }}
+              </span>
+            </td>
+            <td class="p-3 text-slate-400 text-xs">{{ run[4] }}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="5" class="p-4 text-center text-slate-500">No executions recorded yet. Run pipeline/runner.py</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

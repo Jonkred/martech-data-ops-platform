@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: martech_dw
+    environment:
+      POSTGRES_USER: data_engineer
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: analytics_dw
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  platform-app:
+    build: .
+    container_name: martech_platform
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=data_engineer
+      - DB_PASS=devpassword
+      - DB_NAME=analytics_dw
+    depends_on:
+      - db
+    volumes:
+      - .:/workspace:z
+
+volumes:
+  pgdata:

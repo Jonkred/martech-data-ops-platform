@@ -1,0 +1,20 @@
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+
+# Data files & Volumes
+*.db
+*.sqlite

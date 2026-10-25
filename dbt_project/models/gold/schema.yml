@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: mart_customer_rfm
+    description: "Customer 360 aggregated attributes for activation"
+    columns:
+      - name: resolved_customer_id
+        tests:
+          - unique
+          - not_null
+      - name: audience_segment
+        tests:
+          - accepted_values:
+              values: ['VIP', 'High-Engagement', 'Regular']
